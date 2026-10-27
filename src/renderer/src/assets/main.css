@@ -865,11 +865,18 @@ body:has(> [data-slot='dialog-overlay'], > [data-slot='sheet-overlay'])
   overflow: hidden;
 }
 
-/* Blur source regions independently so status-bar animation cannot re-filter the workspace. */
-body:has(> [data-slot='dialog-overlay'], > [data-slot='sheet-overlay'], > [data-onboarding-overlay])
-  .app-layout
-  > :not(.window-controls) {
-  filter: blur(2px);
+/* Blur source regions independently so status-bar animation cannot re-filter the workspace.
+   Why: a body variable, not a descendant :has(); that form restyled the whole page on each forced style read. */
+body:has(
+  > [data-slot='dialog-overlay'],
+  > [data-slot='sheet-overlay'],
+  > [data-onboarding-overlay]
+) {
+  --modal-scene-filter: blur(2px);
+}
+
+.app-layout > :not(.window-controls) {
+  filter: var(--modal-scene-filter);
 }
 
 body
